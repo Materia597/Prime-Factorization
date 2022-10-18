@@ -1,5 +1,5 @@
 # Prime-Factorization
-# Three Js functions that can find if an integer is prime, return an array of numbers that are prime, and completely prime factor a number
+Three Js functions that can find if an integer is prime, return an array of numbers that are prime, and completely prime factor a number
 
 primeCheck(x) takes a number as a value, and it will either output a true or false depending on if it's prime or not. It will also throw an error if the input is not an integer or less than or equal to zero.
 
