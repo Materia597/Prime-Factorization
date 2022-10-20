@@ -27,6 +27,16 @@ class Number {
         return false;
     }
 
+    static isEven(val) {
+        if(!Number.isInt(val)) {
+            return undefined;
+        }
+        if(val % 2 === 0) {
+            return true;
+        }
+        return false;
+    }
+
     static isNum(val) {
         if(!typeof(val) === "number") {
             return false
@@ -96,6 +106,66 @@ class Number {
         } else {
             return null;
         }
+    }
+
+    static getPrimes(min, max) {
+        if(!Number.isInt(min) || !Number.isPositive(min) || !Number.isInt(max) || !Number.isPositive(max)) {
+            return [];
+        }
+        let primeList = [];
+        while(min <= max) {
+            if(Number.isPrime(min)) {
+                primeList.push(min);
+            }
+            min++;
+        }
+        return primeList;
+    }
+
+    static getPrimeFactprs(val) {
+        if(!Number.isInt(val) || !Number.isPositive(val)) {
+            return [];
+        }
+        let standIn = val;
+        let pCheck = Number.getPrimes(1, val);
+        let failsafe = 0;
+        let pFactrors = [];
+        for(let checkIndex = 0; checkIndex <= pCheck.length && failsafe <= val * 2; failsafe++ ) {
+            if(Number.isPrime(standIn)) {
+                pFactrors.push(standIn);
+                return pFactrors;
+            } else if(standIn % pCheck[checkIndex] === 0) {
+                pFactrors.push(pCheck[checkIndex]);
+                standIn /= pCheck[checkIndex];
+            } else {
+                checkIndex++;
+            }
+        }
+        return "failsafe triggered";
+    }
+
+    static average(val) {
+        let runningTotal = 0;
+        let isNum = true;
+        val.forEach(el => {
+            if(!Number.isNum(el)) {
+                isNum = false;
+            } else {
+                runningTotal += el;
+            }
+        })
+        if(!isNum) {
+            return undefined;
+        }
+        return runningTotal / val.length;
+    }
+
+    static findMin(arr) {
+        if(!typeof(arr) === "object") {
+            return undefined;
+        }
+        let minVal = arr[0];
+
     }
 
     static getInfo(val) {
