@@ -16,6 +16,22 @@ class Number {
         }
         return true;
     }
+    
+    static isNumList(arr) {
+        if(!typeof(arr) === "object") {
+            return false;
+        }
+        let isList = true;
+        arr.forEach(el => {
+            if(!Number.isNum(el)) {
+                isList = false;
+            }
+        })
+        if(!isList) {
+            return false;
+        }
+        return true;
+    }
 
     static isInt(val) {
         if(!typeof(val) === "number") {
@@ -144,7 +160,7 @@ class Number {
         return "failsafe triggered";
     }
 
-    static average(val) {
+    static AVG(val) {
         let runningTotal = 0;
         let isNum = true;
         val.forEach(el => {
@@ -160,14 +176,170 @@ class Number {
         return runningTotal / val.length;
     }
 
-    static findMin(arr) {
+    static MED(arr) {
+        if(!Number.isNumList(arr)) {
+            return undefined;
+        }
+        let a = arr.sort();
+        let p;
+        if(!Number.isEven(a.length)) {
+            p = (a.length + 1) / 2 - 1;
+            return a[p];
+        } else if(Number.isEven(a.length)) {
+            p = a.length / 2 - 1;
+            return (a[p] + a[p + 1]) / 2;
+        }
+    }
+
+    static quartiles(arr) {
+        if(!Number.isNumList(arr)) {
+            return [];
+        }
+        let a = arr.sort();
+        let p1;
+        let p2;
+        let p3;
+        if(!Number.isEven(a.length)) {
+            p2 = (a.length + 1) / 2 - 1;
+        } else if(Number.isEven(a.length)) {
+            p2 = a.length / 2 - 1;
+        }
+        //console.log(p2);
+        let a0 = [];
+        let a1 = [];
+        for(let index = 0; index < a.length; index++) {
+            if(index < p2) {
+                a0.push(a[index]);
+            } else if(index > p2) {
+                a1.push(a[index]);
+            }
+        }
+        //console.log(a0);
+        //console.log(a1);
+        p1 = Number.MED(a0);
+        p3 = Number.MED(a1);
+        return [p1, p2, p3];
+    }
+
+    static MODE(arr) {
+        if(!Number.isNumList(arr)) {
+            return undefined;
+        }
+        let a = arr.sort();
+        let currentNum = a[0];
+        let currentCount = 0;
+        let list = [];
+        arr.forEach(el => {
+            if(el === currentNum) {
+                currentCount++;
+            }
+            if(el != currentNum) {
+                list.push([currentNum, currentCount]);
+                currentCount = 1;
+                currentNum = el;
+            }
+        }); // incomplete
+        return null;
+    }
+
+    static standardDeviation(arr, type = "Sample") {
+        if(!Number.isNumList(arr)) {
+          return 0;
+        }
+        //let avg = Number.AVG(arr);
+        let runTot = Number.sumOfSquares(arr);
+        switch(type) {
+          case "Population":
+            return Math.sqrt(runTot / arr.length);
+            break;
+          case "Sample":
+            return Math.sqrt(runTot / (arr.length - 1));
+            break;
+          default:
+            return undefined;
+        }
+    }
+    
+    static sumOfSquares(arr) {
+        if(!Number.isNumList(arr)) {
+          return undefined;
+        }
+        let avg = Number.AVG(arr);
+        let runTot = 0;
+        arr.forEach(el => {
+          runTot += (el - avg) * (el - avg)
+        })
+        return runTot;
+    }
+
+    static variance(arr, type = "Sample") {
+        if(!Number.isNumList(arr)) {
+          return 0;
+        }
+        let avg = Number.AVG(arr);
+        let runTot = Number.sumOfSquares(arr)
+        switch(type) {
+          case "Population":
+            return runTot / arr.length;
+            break;
+          case "Sample":
+            return runTot / (arr.length - 1);
+            break;
+          default:
+            return undefined;
+        }
+        //return runTot / (arr.length - 1);
+    }
+
+    static zScore(data, arr) {
+        if(!Number.isNum(data) || !Number.isNumList(arr)) {
+          return undefined;
+        }
+        let top = data - Number.AVG(arr);
+        let bottom = Number.standardDeviation(arr, "Population");
+        return top / bottom;
+    }
+
+    static min(arr) {
         if(!typeof(arr) === "object") {
             return undefined;
         }
-        let minVal = arr[0];
-
+        let minVal = 0;
+        let num = true;
+        arr.forEach(el => {
+            if(!Number.isNum(el)) {
+                isNum = false;
+            }
+            if(el < minVal) {
+                minVal = el;
+            }
+        })
+        if(!num) {
+            console.log("Element of array was not a number, is was not considered");
+        }
+        return minVal;
     }
 
+    static max(arr) {
+        if(!typeof(arr) === "object") {
+            return undefined;
+        }
+        let maxVal = 0;
+        let num = true;
+        arr.forEach(el => {
+            if(!Number.isNum(el)) {
+                num = false;
+            }
+            if(el > maxVal) {
+                maxVal = el;
+            }
+        })
+        if(!num) {
+            console.log("Element of array was not a number, is was not considered");
+        }
+        return maxVal
+    }
+    
     static getInfo(val) {
         if(!Number.isNum) {
             return [];
