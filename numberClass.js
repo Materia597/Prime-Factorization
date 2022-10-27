@@ -138,7 +138,7 @@ class Number {
         return primeList;
     }
 
-    static getPrimeFactprs(val) {
+    static getPrimeFactors(val) {
         if(!Number.isInt(val) || !Number.isPositive(val)) {
             return [];
         }
@@ -340,6 +340,10 @@ class Number {
         return maxVal
     }
     
+
+
+
+    /*
     static getInfo(val) {
         if(!Number.isNum) {
             return [];
@@ -352,4 +356,5 @@ class Number {
 
         return list;
     }
+    */
 }
